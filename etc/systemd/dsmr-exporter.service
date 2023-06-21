@@ -1,0 +1,11 @@
+[Unit]
+Description=DSMR Exporter
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/dsmr-exporter -device /dev/serial/by-id/usb-FTDI_FT232R_USB_UART_AL8U3XEQ-if00-port0
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
