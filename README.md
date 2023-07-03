@@ -1,4 +1,4 @@
-# go-dsmr
+# go-dsmr [![build](https://github.com/alexbakker/go-dsmr/actions/workflows/build.yml/badge.svg)](https://github.com/alexbakker/go-dsmr/actions/workflows/build.yml)
 
 __go-dsmr__ is a Go package for reading
 [DSMR](https://www.netbeheernederland.nl/_upload/Files/Slimme_meter_15_a727fce1f1.pdf)
