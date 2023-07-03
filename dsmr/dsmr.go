@@ -53,12 +53,12 @@ func (r *Reader) Next() (*Frame, error) {
 			return nil, fmt.Errorf("read dsmr header: %w", err)
 		}
 
+		// If we started reading somewhere in the middle of the stream, we need
+		// to wait until we see a header
 		if string(b) == "/" {
 			break
 		}
 
-		// If we started reading somewhere in the middle of the stream, we need
-		// to wait until we see a header
 		if _, err = r.r.ReadByte(); err != nil {
 			return nil, fmt.Errorf("read dsmr header: %w", err)
 		}

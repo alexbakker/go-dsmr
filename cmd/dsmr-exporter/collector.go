@@ -70,7 +70,7 @@ func (c *Collector) Describe(ch chan<- *prometheus.Desc) {
 			ValueType: prometheus.CounterValue,
 			Subsystem: "electricity",
 			Name:      "power_delivered_kwh_total",
-			Help:      "Meter Reading electricity delivered to client (low tariff) in 0.001 kWh",
+			Help:      "Meter Reading electricity delivered to client in 0.001 kWh",
 			Labels:    []string{"tarrif"},
 		})
 		c.createDesc("1-0:1.7.0", &Desc{
