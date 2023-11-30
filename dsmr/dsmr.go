@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/binary"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -110,6 +111,10 @@ func ParseFrame(raw string) (*Frame, error) {
 
 		obj, err := ParseObject(s)
 		if err != nil {
+			objErr := new(unsupportedObjectError)
+			if errors.As(err, &objErr) {
+				continue
+			}
 			return nil, err
 		}
 		f.Objects[obj.ID] = obj
@@ -174,7 +179,7 @@ func ParseObject(raw string) (Object, error) {
 	case 1:
 		value = values[len(values)-1]
 	default:
-		return Object{}, fmt.Errorf("unsupported number of values in dsmr object: %q", raw)
+		return Object{}, &unsupportedObjectError{obj: raw}
 	}
 
 	return Object{
