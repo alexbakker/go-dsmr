@@ -26,6 +26,14 @@
           go
         ];
       };
+      nixosModules.default = ({ pkgs, ... }: {
+        imports = [ ./module.nix ];
+        nixpkgs.overlays = [
+          (_self: _super: {
+            dsmr-exporter = self.packages.${pkgs.system}.dsmr-exporter;
+          })
+        ];
+      });
     }
   );
 }
