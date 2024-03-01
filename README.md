@@ -37,3 +37,21 @@ dsmr_gas_delivered_m3 4.59 1695549909000
 ```
 
 ![Example Grafana dashboard](grafana.png)
+
+## NixOS
+
+This repository comes with a NixOS module for the DSMR Prometheus exporter. To
+use it, simply add this repository as an input to your Nix flake and import the
+module into your NixOS configuration.
+
+Example usage:
+
+```nix
+{
+  services.dsmr-exporter = {
+    enable = true;
+    port = 9111;
+    serialDevice = "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_XXXXXXXX-if00-port0";
+  };
+}
+```
