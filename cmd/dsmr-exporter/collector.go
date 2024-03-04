@@ -73,6 +73,16 @@ func (c *Collector) Describe(ch chan<- *prometheus.Desc) {
 			Help:      "Meter Reading electricity delivered to client in 0.001 kWh",
 			Labels:    []string{"tarrif"},
 		})
+		c.createDescMulti(map[string][]string{
+			"1-0:2.8.1": {"low"},
+			"1-0:2.8.2": {"normal"},
+		}, &Desc{
+			ValueType: prometheus.CounterValue,
+			Subsystem: "electricity",
+			Name:      "power_received_kwh_total",
+			Help:      "Meter Reading electricity received from client in 0.001 kWh",
+			Labels:    []string{"tarrif"},
+		})
 		c.createDesc("1-0:1.7.0", &Desc{
 			ValueType: prometheus.GaugeValue,
 			Subsystem: "electricity",
