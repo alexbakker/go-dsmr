@@ -18,7 +18,7 @@
           src = ./.;
 
           subPackages = [ "cmd/dsmr-exporter" ];
-          vendorSha256 = "sha256-7cc7ORKcUJC9i9t0b+WL36S9/geeOCYcm/lMbjr7nKQ=";
+          vendorHash = "sha256-7cc7ORKcUJC9i9t0b+WL36S9/geeOCYcm/lMbjr7nKQ=";
         };
       };
       devShells.default = with pkgs; mkShell {
