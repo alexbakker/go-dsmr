@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"fmt"
 	"net/http"
@@ -61,6 +62,10 @@ func main() {
 		if err := collector.Run(ctx, func() error {
 			return reg.Register(collector)
 		}); err != nil {
+			var checksumErr *dsmr.ChecksumError
+			if errors.As(err, &checksumErr) {
+				fmt.Fprintf(os.Stderr, "Raw DSMR frame: %q\n", string(checksumErr.RawFrame))
+			}
 			exitWithError(fmt.Sprintf("Failed to run collector: %s", err))
 		}
 	}()

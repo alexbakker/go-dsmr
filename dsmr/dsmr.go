@@ -41,6 +41,16 @@ type Value struct {
 	Unit string
 }
 
+type ChecksumError struct {
+	Expected uint16
+	Actual   uint16
+	RawFrame []byte
+}
+
+func (e *ChecksumError) Error() string {
+	return fmt.Sprintf("dsmr crc mismatch: 0x%04X != 0x%04X", e.Expected, e.Actual)
+}
+
 func NewReader(r io.Reader) *Reader {
 	return &Reader{
 		r: bufio.NewReader(r),
@@ -87,7 +97,11 @@ func (r *Reader) Next() (*Frame, error) {
 	crc := crc16.Checksum(rawFrame)
 
 	if pcrc != crc {
-		return nil, fmt.Errorf("dsmr crc mismatch: 0x%04X != 0x%04X", pcrc, crc)
+		return nil, &ChecksumError{
+			Expected: pcrc,
+			Actual:   crc,
+			RawFrame: rawFrame,
+		}
 	}
 
 	return ParseFrame(string(rawFrame))
