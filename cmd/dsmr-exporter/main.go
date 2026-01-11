@@ -18,9 +18,10 @@ import (
 )
 
 var (
-	flagHttpAddr       = flag.String("http-addr", ":9111", "the addr to have the http server listen on")
-	flagDevice         = flag.String("device", "", "the name of the serial device")
-	flagDeviceBaudRate = flag.Int("device-baud-rate", 115200, "the baud rate to use for the serial device")
+	flagHttpAddr          = flag.String("http-addr", ":9111", "the addr to have the http server listen on")
+	flagDevice            = flag.String("device", "", "the name of the serial device")
+	flagDeviceBaudRate    = flag.Int("device-baud-rate", 115200, "the baud rate to use for the serial device")
+	flagDeviceReadTimeout = flag.Duration("device-read-timeout", 5*time.Second, "the read timeout to use for the serial device (-1 to disable)")
 
 	ctx, cancel = context.WithCancel(context.Background())
 )
@@ -43,6 +44,9 @@ func main() {
 			exitWithError(fmt.Sprintf("Failed to close serial port: %s", err))
 		}
 	}()
+	if err := port.SetReadTimeout(*flagDeviceReadTimeout); err != nil {
+		exitWithError(fmt.Sprintf("Failed to set read timeout on serial port: %s", err))
+	}
 
 	reg := prometheus.NewPedanticRegistry()
 	reg.MustRegister(collectors.NewGoCollector())

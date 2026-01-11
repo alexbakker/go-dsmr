@@ -7,12 +7,16 @@ let
 in {
   options.services.dsmr-exporter = {
     enable = mkEnableOption "DSMR exporter";
-    serialDevice = mkOption {
-      type = types.str;
-    };
     port = mkOption {
       type = types.port;
       default = 9111;
+    };
+    serialDevice = mkOption {
+      type = types.str;
+    };
+    readTimeout = mkOption {
+      type = types.str;
+      default = "5s";
     };
   };
 
@@ -25,7 +29,7 @@ in {
       serviceConfig = {
         Type = "simple";
         DynamicUser = true;
-        ExecStart = "${pkgs.dsmr-exporter}/bin/dsmr-exporter -device ${cfg.serialDevice} -http-addr :${toString cfg.port}";
+        ExecStart = "${pkgs.dsmr-exporter}/bin/dsmr-exporter -device ${cfg.serialDevice} -device-read-timeout ${cfg.readTimeout} -http-addr :${toString cfg.port}";
         Restart = "always";
         RestartSec = 5;
 
